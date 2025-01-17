@@ -1,13 +1,21 @@
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
+import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  @override
   Widget build(BuildContext context) {
+    var boolValue = false;
+
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -16,14 +24,7 @@ class LoginView extends StatelessWidget {
             children: [
               const SizedBox(height: 62),
               Image.asset(MyImages.logo),
-              Text(
-                'Sign in',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                  color: MyColors.purpleColor,
-                ),
-              ),
+              _signInText('Sign in'),
               ElevatedButton(
                 child: const Text('Open route'),
                 onPressed: () {
@@ -37,15 +38,28 @@ class LoginView extends StatelessWidget {
               GestureDetector(
                 child: const Text('Sign up'),
                 onTap: () {
-                  print('xxx1');
-                  print('xxx2');
+                  setState(() {
+                    boolValue = !boolValue;
+                  });
                 },
                 onDoubleTap: () => print('clicked twice'),
-              )
+              ),
+              const BasicTextFormField(initialValue: 'Hello'),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+Widget _signInText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.w700,
+      color: MyColors.purpleColor,
+    ),
+  );
 }
