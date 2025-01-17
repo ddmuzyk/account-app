@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MaterialApp(
-    title: 'Navigation Basics',
+    title: 'dsw_52745',
     debugShowCheckedModeBanner: false,
     home: LoginView(),
-  ));
+  ),);
 }

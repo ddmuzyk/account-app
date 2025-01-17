@@ -20,32 +20,43 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
         body: SizedBox(
           width: double.infinity,
-          child: Column(
-            children: [
-              const SizedBox(height: 62),
-              Image.asset(MyImages.logo),
-              _signInText('Sign in'),
-              ElevatedButton(
-                child: const Text('Open route'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterView(),),
-                  );
-                },
-              ),
-              GestureDetector(
-                child: const Text('Sign up'),
-                onTap: () {
-                  setState(() {
-                    boolValue = !boolValue;
-                  });
-                },
-                onDoubleTap: () => print('clicked twice'),
-              ),
-              const BasicTextFormField(initialValue: 'Hello'),
-            ],
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 62),
+                Image.asset(MyImages.logo),
+                const SizedBox(height: 30),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: _signInText('Sign in')),
+                ElevatedButton(
+                  child: const Text('Open route'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterView(),
+                      ),
+                    );
+                  },
+                ),
+                GestureDetector(
+                  child: const Text('Sign up'),
+                  onTap: () {
+                    setState(() {
+                      boolValue = !boolValue;
+                    });
+                  },
+                  onDoubleTap: () => print('clicked twice'),
+                ),
+                const BasicTextFormField(
+                  initialValue: '',
+                  hintText: 'Email or User Name',
+                  withShadow: true,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -56,10 +67,11 @@ class _LoginViewState extends State<LoginView> {
 Widget _signInText(String text) {
   return Text(
     text,
+    textAlign: TextAlign.start,
     style: TextStyle(
       fontSize: 30,
       fontWeight: FontWeight.w700,
-      color: MyColors.purpleColor,
+      color: MyColors.purple1,
     ),
   );
 }
