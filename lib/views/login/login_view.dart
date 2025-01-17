@@ -29,31 +29,40 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 30),
                 Align(
                     alignment: Alignment.centerLeft,
-                    child: _signInText('Sign in')),
-                ElevatedButton(
-                  child: const Text('Open route'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterView(),
-                      ),
-                    );
-                  },
-                ),
-                GestureDetector(
-                  child: const Text('Sign up'),
-                  onTap: () {
-                    setState(() {
-                      boolValue = !boolValue;
-                    });
-                  },
-                  onDoubleTap: () => print('clicked twice'),
-                ),
+                    child: _signInText('Sign in'),),
+                const SizedBox(height: 30),
+                // ElevatedButton(
+                //   child: const Text('Open route'),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const RegisterView(),
+                //       ),
+                //     );
+                //   },
+                // ),
+                // GestureDetector(
+                //   child: const Text('Sign up'),
+                //   onTap: () {
+                //     setState(() {
+                //       boolValue = !boolValue;
+                //     });
+                //   },
+                //   onDoubleTap: () => print('clicked twice'),
+                // ),
                 const BasicTextFormField(
                   initialValue: '',
                   hintText: 'Email or User Name',
+                  prefixIcon: MyImages.user,
                   withShadow: true,
+                ),
+                const SizedBox(height: 30),
+                const BasicTextFormField(
+                  initialValue: '',
+                  hintText: 'Password',
+                  prefixIcon: MyImages.password,
+                  suffixIcon: MyImages.eye,
                 ),
               ],
             ),
