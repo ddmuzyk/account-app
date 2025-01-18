@@ -2,8 +2,9 @@ import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
-import 'package:flutter/material.dart';
+import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -15,7 +16,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
-    var boolValue = false;
 
     return SafeArea(
       child: Scaffold(
@@ -30,29 +30,9 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 21),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _signInText('Sign in'),
+                  child: headerText('Sign in'),
                 ),
                 const SizedBox(height: 46),
-                // ElevatedButton(
-                //   child: const Text('Open route'),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => const RegisterView(),
-                //       ),
-                //     );
-                //   },
-                // ),
-                // GestureDetector(
-                //   child: const Text('Sign up'),
-                //   onTap: () {
-                //     setState(() {
-                //       boolValue = !boolValue;
-                //     });
-                //   },
-                //   onDoubleTap: () => print('clicked twice'),
-                // ),
                 const BasicTextFormField(
                   initialValue: '',
                   hintText: 'Email or User Name',
@@ -84,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                     child: Text('Sign in',
-                        style: TextStyle(color: MyColors.white)),
+                        style: TextStyle(color: MyColors.white),),
                   ),
                 ),
                 const SizedBox(height: 170),
@@ -118,17 +98,6 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-}
-
-Widget _signInText(String text) {
-  return Text(
-    text,
-    style: TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.w700,
-      color: MyColors.purple1,
-    ),
-  );
 }
 
 Widget _forgetPasswordText() {
