@@ -2,13 +2,12 @@ import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 
 class BasicTextFormField extends StatelessWidget {
-  final String initialValue;
   final String hintText;
   final String prefixIcon;
   final String? suffixIcon;
   final bool withShadow;
 
-  const BasicTextFormField({required this.initialValue, required this.hintText, required this.prefixIcon, super.key, this.withShadow = false, this.suffixIcon});
+  const BasicTextFormField({required this.hintText, required this.prefixIcon, super.key, this.withShadow = false, this.suffixIcon});
 
 
   @override

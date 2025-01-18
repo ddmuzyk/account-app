@@ -1,7 +1,10 @@
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
-import 'package:flutter/material.dart';
+import 'package:dsw_52745/views/widgets/basic_button.dart';
+import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
+import 'package:dsw_52745/views/widgets/navigation_text.dart';
+import 'package:flutter/material.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
@@ -19,10 +22,42 @@ class RegisterView extends StatelessWidget {
               children: [
                 const SizedBox(height: 59),
                 _backButton(context),
-                const SizedBox(height: 101),
+                const SizedBox(height: 70),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: headerText('Sign up'),
+                ),
+                const SizedBox(height: 46),
+                const BasicTextFormField(
+                  hintText: 'Full Name',
+                  prefixIcon: MyImages.user,
+                ),
+                const SizedBox(height: 40),
+                const BasicTextFormField(
+                  hintText: 'Email',
+                  prefixIcon: MyImages.email,
+                ),
+                const SizedBox(height: 40),
+                const BasicTextFormField(
+                  hintText: 'Password',
+                  prefixIcon: MyImages.password,
+                  suffixIcon: MyImages.eye,
+                ),
+                const SizedBox(height: 40),
+                const BasicTextFormField(
+                  hintText: 'Confirm Password',
+                  prefixIcon: MyImages.password,
+                  suffixIcon: MyImages.eye,
+                ),
+                const SizedBox(height: 80),
+                basicButton('Sign up'),
+                const SizedBox(height: 60),
+                navigationText(
+                  text: 'Already have an account?',
+                  navigableText: ' Sign in',
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
@@ -45,7 +80,7 @@ Widget _backButton(BuildContext context) {
             style: TextStyle(
                 fontSize: 12,
                 color: MyColors.purple1,
-                fontWeight: FontWeight.w400)),
+                fontWeight: FontWeight.w400,),),
       ],
     ),
   );

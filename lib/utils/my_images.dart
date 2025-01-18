@@ -5,4 +5,5 @@ class MyImages {
   static const password = '$_assetsFolder/password.png';
   static const eye = '$_assetsFolder/eye.png';
   static const backArrow = '$_assetsFolder/back.png';
+  static const email = '$_assetsFolder/email.png';
 }

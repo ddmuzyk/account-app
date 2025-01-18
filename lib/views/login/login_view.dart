@@ -1,9 +1,10 @@
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
+import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
-import 'package:flutter/gestures.dart';
+import 'package:dsw_52745/views/widgets/navigation_text.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
@@ -34,14 +35,12 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 const SizedBox(height: 46),
                 const BasicTextFormField(
-                  initialValue: '',
                   hintText: 'Email or User Name',
                   prefixIcon: MyImages.user,
                   withShadow: true,
                 ),
                 const SizedBox(height: 40),
                 const BasicTextFormField(
-                  initialValue: '',
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
@@ -52,45 +51,18 @@ class _LoginViewState extends State<LoginView> {
                   child: _forgetPasswordText(),
                 ),
                 const SizedBox(height: 40),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: MyColors.pink,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                    child: Text('Sign in',
-                        style: TextStyle(color: MyColors.white),),
-                  ),
-                ),
+                basicButton('Sign in'),
                 const SizedBox(height: 170),
-                RichText(
-                  text: TextSpan(
+                navigationText(
                   text: "Don't have account?",
-                  style: TextStyle(color: MyColors.purple1, fontSize: 15),
-                  children: [
-                    TextSpan(
-                      text: ' Sign up',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RegisterView(),
-                            ),
-                          );
-                        },
-                    ),
-                  ],
-                ),),
+                  navigableText: ' Sign up',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const RegisterView()),
+                    );
+                  },
+                ),
               ],
             ),
           ),
