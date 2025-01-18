@@ -3,6 +3,7 @@ import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -26,12 +27,12 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 const SizedBox(height: 62),
                 Image.asset(MyImages.logo),
-                const SizedBox(height: 30),
+                const SizedBox(height: 21),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: _signInText('Sign in'),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 46),
                 // ElevatedButton(
                 //   child: const Text('Open route'),
                 //   onPressed: () {
@@ -58,19 +59,19 @@ class _LoginViewState extends State<LoginView> {
                   prefixIcon: MyImages.user,
                   withShadow: true,
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
                 const BasicTextFormField(
                   initialValue: '',
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
                 Align(
                   alignment: Alignment.centerRight,
                   child: _forgetPasswordText(),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -82,9 +83,34 @@ class _LoginViewState extends State<LoginView> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    child: Text('Sign in', style: TextStyle(color: MyColors.white)),
+                    child: Text('Sign in',
+                        style: TextStyle(color: MyColors.white)),
                   ),
                 ),
+                const SizedBox(height: 170),
+                RichText(
+                  text: TextSpan(
+                  text: "Don't have account?",
+                  style: TextStyle(color: MyColors.purple1, fontSize: 15),
+                  children: [
+                    TextSpan(
+                      text: ' Sign up',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterView(),
+                            ),
+                          );
+                        },
+                    ),
+                  ],
+                ),),
               ],
             ),
           ),
