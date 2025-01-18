@@ -28,8 +28,9 @@ class _LoginViewState extends State<LoginView> {
                 Image.asset(MyImages.logo),
                 const SizedBox(height: 30),
                 Align(
-                    alignment: Alignment.centerLeft,
-                    child: _signInText('Sign in'),),
+                  alignment: Alignment.centerLeft,
+                  child: _signInText('Sign in'),
+                ),
                 const SizedBox(height: 30),
                 // ElevatedButton(
                 //   child: const Text('Open route'),
@@ -64,6 +65,26 @@ class _LoginViewState extends State<LoginView> {
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
                 ),
+                const SizedBox(height: 30),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: _forgetPasswordText(),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: MyColors.pink,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    child: Text('Sign in', style: TextStyle(color: MyColors.white)),
+                  ),
+                ),
               ],
             ),
           ),
@@ -76,9 +97,19 @@ class _LoginViewState extends State<LoginView> {
 Widget _signInText(String text) {
   return Text(
     text,
-    textAlign: TextAlign.start,
     style: TextStyle(
       fontSize: 30,
+      fontWeight: FontWeight.w700,
+      color: MyColors.purple1,
+    ),
+  );
+}
+
+Widget _forgetPasswordText() {
+  return Text(
+    'Forget Password?',
+    style: TextStyle(
+      fontSize: 15,
       fontWeight: FontWeight.w700,
       color: MyColors.purple1,
     ),

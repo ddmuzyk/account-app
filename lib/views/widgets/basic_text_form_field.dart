@@ -1,5 +1,4 @@
 import 'package:dsw_52745/utils/my_colors.dart';
-import 'package:dsw_52745/utils/my_images.dart';
 import 'package:flutter/material.dart';
 
 class BasicTextFormField extends StatelessWidget {
@@ -27,11 +26,11 @@ class BasicTextFormField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 15, color: MyColors.grey, shadows: shadow),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyColors.purple2),
+            borderSide: BorderSide(color: MyColors.purple2, width: 2),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.blue),
+            borderSide: const BorderSide(color: Colors.blue, width: 2),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
