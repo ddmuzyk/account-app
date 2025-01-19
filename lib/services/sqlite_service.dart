@@ -67,7 +67,7 @@ class SQLiteService {
       version: 1,
       onCreate: (db, version) {
         db..execute(
-          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT, email TEXT, password TEXT)',
+          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT, password TEXT)',
         )
         ..execute(
           'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
@@ -78,13 +78,13 @@ class SQLiteService {
 
   Future<void> insertUser(User user) async {
     final db = await database;
-    await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.abort);
+    await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
     print('User added: $user');
   }
 
   Future<void> insertTask(Task task) async {
     final db = await database;
-    await db.insert(constants.tasksTable, task.toMap(), conflictAlgorithm: ConflictAlgorithm.abort);
+    await db.insert(constants.tasksTable, task.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
   }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
