@@ -22,8 +22,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   bool isConfirmedPasswordValid(){
     final isValid = password == confirmedPassword;
-    print('Is confirmed password valid: $isValid');
-    return password == confirmedPassword;
+    return isValid;
   }
 
   void onFullNameChange(String newName){
@@ -33,15 +32,16 @@ class _RegisterViewState extends State<RegisterView> {
     });
   }
 
-  void onEmailChange(String newEmail){
+  Future<void> onEmailChange(String newEmail) async {
     setState(() {
       email = newEmail;
     });
+    await SQLiteService().getUsers();
   }
 
   void onPasswordChange(String newPassword){
     setState(() {
-      email = newPassword;
+      password = newPassword;
     });
   }
 
@@ -70,7 +70,9 @@ class _RegisterViewState extends State<RegisterView> {
       print('Password need to match');
       return;
     }
-
+    final newUser = User(name: fullName, email: email, password: password);
+    final sqlLite = SQLiteService()
+      ..insertUser(newUser);
   }
 
   @override
@@ -118,7 +120,7 @@ class _RegisterViewState extends State<RegisterView> {
                   onChange: onConfirmedPasswordChange,
                 ),
                 const SizedBox(height: 80),
-                basicButton(text: 'Sign up', onPressed: isConfirmedPasswordValid),
+                basicButton(text: 'Sign up', onPressed: onSignUp),
                 const SizedBox(height: 60),
                 navigationText(
                   text: 'Already have an account?',

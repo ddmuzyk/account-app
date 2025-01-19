@@ -89,6 +89,8 @@ class SQLiteService {
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
-    return db.query(constants.usersTable);
+    final users = await db.query(constants.usersTable);
+    print('Users: $users');
+    return users;
   }
 }
