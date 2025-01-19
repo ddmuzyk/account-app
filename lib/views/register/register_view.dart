@@ -19,6 +19,37 @@ class _RegisterViewState extends State<RegisterView> {
   String password = '';
   String confirmedPassword = '';
 
+  bool isConfirmedPasswordValid(){
+    final isValid = password == confirmedPassword;
+    print('Is confirmed password valid: $isValid');
+    return password == confirmedPassword;
+  }
+
+  void onFullNameChange(String newName){
+    setState(() {
+      fullName = newName;
+      print('fullName: $fullName');
+    });
+  }
+
+  void onEmailChange(String newEmail){
+    setState(() {
+      email = newEmail;
+    });
+  }
+
+  void onPasswordChange(String newPassword){
+    setState(() {
+      email = newPassword;
+    });
+  }
+
+  void onConfirmedPasswordChange(String newConfirmedPassword) {
+    setState(() {
+      confirmedPassword = newConfirmedPassword;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,32 +72,30 @@ class _RegisterViewState extends State<RegisterView> {
                 BasicTextFormField(
                   hintText: 'Full Name',
                   prefixIcon: MyImages.user,
-                  onChange: (String val) {
-                    setState(() {
-                      fullName = val;
-                      print(fullName);
-                    });
-                  },
+                  onChange: onFullNameChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Email',
                   prefixIcon: MyImages.email,
+                  onChange: onEmailChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
+                  onChange: onPasswordChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Confirm Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
+                  onChange: onConfirmedPasswordChange,
                 ),
                 const SizedBox(height: 80),
-                basicButton('Sign up'),
+                basicButton(text: 'Sign up', onPressed: isConfirmedPasswordValid),
                 const SizedBox(height: 60),
                 navigationText(
                   text: 'Already have an account?',
