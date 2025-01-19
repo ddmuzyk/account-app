@@ -3,13 +3,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class User {
-  final int id;
+  final Null id = null;
   final String name;
   final String email;
   final String password;
 
   User({
-    required this.id,
     required this.name,
     required this.email,
     required this.password,
@@ -26,14 +25,13 @@ class User {
 }
 
 class Task {
-  final int id;
+  final Null id = null;
   final String userId;
   final String name;
   final String description;
   final DateTime createdAt;
 
   Task({
-    required this.id,
     required this.userId,
     required this.name,
     required this.description,
@@ -69,7 +67,7 @@ class SQLiteService {
       version: 1,
       onCreate: (db, version) {
         db..execute(
-          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)',
+          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT, email TEXT, password TEXT)',
         )
         ..execute(
           'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',

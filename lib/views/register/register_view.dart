@@ -4,6 +4,7 @@ import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
+import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatefulWidget {
@@ -48,6 +49,28 @@ class _RegisterViewState extends State<RegisterView> {
     setState(() {
       confirmedPassword = newConfirmedPassword;
     });
+  }
+
+  void onSignUp() {
+    if (fullName.isEmpty) {
+      print('No fullName provided');
+      return;
+    } else if (email.isEmpty) {
+      print('No email provided');
+      return;
+    } else if (password.isEmpty) {
+      print('No password provided');
+      return;
+    } else if (confirmedPassword.isEmpty) {
+      print('No confirmed password provided');
+      return;
+    }
+    final isPasswordMatch = isConfirmedPasswordValid();
+    if (!isPasswordMatch) {
+      print('Password need to match');
+      return;
+    }
+
   }
 
   @override
