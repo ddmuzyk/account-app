@@ -6,8 +6,18 @@ import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
 import 'package:flutter/material.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  String fullName = '';
+  String email = '';
+  String password = '';
+  String confirmedPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +38,15 @@ class RegisterView extends StatelessWidget {
                   child: headerText('Sign up'),
                 ),
                 const SizedBox(height: 46),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Full Name',
                   prefixIcon: MyImages.user,
+                  onChange: (String val) {
+                    setState(() {
+                      fullName = val;
+                      print(fullName);
+                    });
+                  },
                 ),
                 const SizedBox(height: 40),
                 const BasicTextFormField(

@@ -25,6 +25,32 @@ class User {
   }
 }
 
+class Task {
+  final int id;
+  final String userId;
+  final String name;
+  final String description;
+  final DateTime createdAt;
+
+  Task({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.description,
+    required this.createdAt,
+  });
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'userId': userId,
+      'description': description,
+      'createdAt': createdAt,
+    };
+  }
+}
+
 class SQLiteService {
   Database? _database;
 
@@ -43,10 +69,10 @@ class SQLiteService {
       version: 1,
       onCreate: (db, version) {
         db..execute(
-          'CREATE TABLE ${constants.usersTable}(id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)',
+          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)',
         )
         ..execute(
-          'CREATE TABLE ${constants.tasksTable}(id INTEGER PRIMARY KEY, userId INTEGER, name TEXT, description TEXT, dateCreated TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
+          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
         );
       },
     );
@@ -55,6 +81,12 @@ class SQLiteService {
   Future<void> insertUser(User user) async {
     final db = await database;
     await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.abort);
+    print('User added: $user');
+  }
+
+  Future<void> insertTask(Task task) async {
+    final db = await database;
+    await db.insert(constants.tasksTable, task.toMap(), conflictAlgorithm: ConflictAlgorithm.abort);
   }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
