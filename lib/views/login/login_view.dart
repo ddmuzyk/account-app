@@ -51,7 +51,7 @@ class _LoginViewState extends State<LoginView> {
                   child: _forgetPasswordText(),
                 ),
                 const SizedBox(height: 40),
-                basicButton('Sign in'),
+                basicButton(text: 'Sign in', onPressed: (){}),
                 const SizedBox(height: 170),
                 navigationText(
                   text: "Don't have account?",

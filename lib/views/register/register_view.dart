@@ -4,10 +4,76 @@ import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
+import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  String fullName = '';
+  String email = '';
+  String password = '';
+  String confirmedPassword = '';
+
+  bool isConfirmedPasswordValid(){
+    final isValid = password == confirmedPassword;
+    return isValid;
+  }
+
+  void onFullNameChange(String newName){
+    setState(() {
+      fullName = newName;
+      print('fullName: $fullName');
+    });
+  }
+
+  Future<void> onEmailChange(String newEmail) async {
+    setState(() {
+      email = newEmail;
+    });
+    await SQLiteService().getUsers();
+  }
+
+  void onPasswordChange(String newPassword){
+    setState(() {
+      password = newPassword;
+    });
+  }
+
+  void onConfirmedPasswordChange(String newConfirmedPassword) {
+    setState(() {
+      confirmedPassword = newConfirmedPassword;
+    });
+  }
+
+  void onSignUp() {
+    if (fullName.isEmpty) {
+      print('No fullName provided');
+      return;
+    } else if (email.isEmpty) {
+      print('No email provided');
+      return;
+    } else if (password.isEmpty) {
+      print('No password provided');
+      return;
+    } else if (confirmedPassword.isEmpty) {
+      print('No confirmed password provided');
+      return;
+    }
+    final isPasswordMatch = isConfirmedPasswordValid();
+    if (!isPasswordMatch) {
+      print('Password need to match');
+      return;
+    }
+    final newUser = User(name: fullName, email: email, password: password);
+    final sqlLite = SQLiteService()
+      ..insertUser(newUser);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +94,33 @@ class RegisterView extends StatelessWidget {
                   child: headerText('Sign up'),
                 ),
                 const SizedBox(height: 46),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Full Name',
                   prefixIcon: MyImages.user,
+                  onChange: onFullNameChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Email',
                   prefixIcon: MyImages.email,
+                  onChange: onEmailChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
+                  onChange: onPasswordChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Confirm Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
+                  onChange: onConfirmedPasswordChange,
                 ),
                 const SizedBox(height: 80),
-                basicButton('Sign up'),
+                basicButton(text: 'Sign up', onPressed: onSignUp),
                 const SizedBox(height: 60),
                 navigationText(
                   text: 'Already have an account?',
