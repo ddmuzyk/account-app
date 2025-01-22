@@ -1,5 +1,6 @@
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
+import 'package:dsw_52745/views/home/home_view.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
 import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
@@ -51,7 +52,12 @@ class _LoginViewState extends State<LoginView> {
                   child: _forgetPasswordText(),
                 ),
                 const SizedBox(height: 40),
-                basicButton(text: 'Sign in', onPressed: (){}),
+                basicButton(text: 'Sign in', onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeView()),
+                  );
+                }),
                 const SizedBox(height: 170),
                 navigationText(
                   text: "Don't have account?",

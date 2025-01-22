@@ -70,7 +70,7 @@ class SQLiteService {
           'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT, password TEXT)',
         )
         ..execute(
-          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
+          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
         );
       },
     );
