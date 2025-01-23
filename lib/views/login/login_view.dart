@@ -57,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
                     context,
                     MaterialPageRoute(builder: (context) => const HomeView()),
                   );
-                }),
+                },),
                 const SizedBox(height: 170),
                 navigationText(
                   text: "Don't have account?",

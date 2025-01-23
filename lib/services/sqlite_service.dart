@@ -93,4 +93,37 @@ class SQLiteService {
     print('Users: $users');
     return users;
   }
+
+  Future<List<Map<String, dynamic>>> getUserTasks(String username) async {
+    final db = await database;
+    final List<Map<String, dynamic>> tasks = await db.query(
+      constants.tasksTable,
+      where: 'name = ?',
+      whereArgs: [username],
+    );
+
+    return tasks;
+  }
+
+  Future<String?> signIn(String login, String password) async {
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> users = await db.query(
+        constants.usersTable,
+        where: 'email = ? AND password = ?',
+        whereArgs: [login, password],
+      );
+
+      if (users.isNotEmpty) {
+        final userMap = users.first;
+        return userMap['name'] as String;
+      } else {
+        print('No user found with the provided credentials.');
+        return null;
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      return null;
+    }
+  }
 }
