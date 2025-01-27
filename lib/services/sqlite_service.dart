@@ -98,10 +98,10 @@ class SQLiteService {
     final db = await database;
     final List<Map<String, dynamic>> tasks = await db.query(
       constants.tasksTable,
+      columns: ['name', 'description', 'createdAt'],
       where: 'name = ?',
       whereArgs: [username],
     );
-
     return tasks;
   }
 

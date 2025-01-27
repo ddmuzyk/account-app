@@ -1,10 +1,10 @@
+import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
-import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatefulWidget {
