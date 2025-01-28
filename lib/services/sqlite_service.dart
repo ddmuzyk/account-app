@@ -67,7 +67,7 @@ class SQLiteService {
       version: 1,
       onCreate: (db, version) {
         db..execute(
-          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT, password TEXT)',
+          'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT)',
         )
         ..execute(
           'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
@@ -116,8 +116,8 @@ class SQLiteService {
       final db = await database;
       final List<Map<String, dynamic>> users = await db.query(
         constants.usersTable,
-        where: 'email = ? AND password = ?',
-        whereArgs: [login, password],
+        where: '(email = ? OR name = ?) AND password = ?',
+        whereArgs: [login, login, password],
       );
 
       if (users.isNotEmpty) {

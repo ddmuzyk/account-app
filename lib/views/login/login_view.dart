@@ -1,3 +1,5 @@
+import 'package:dsw_52745/services/shared_preferences_service.dart';
+import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/home/home_view.dart';
@@ -16,9 +18,47 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  String login = '';
+  String password = '';
+
+  void onLoginChange(String newLogin) {
+    setState(() {
+      login = newLogin;
+    });
+  }
+
+  void onPasswordChange(String newPassword) {
+    setState(() {
+      password = newPassword;
+    });
+  }
+
+  void onSignIn() async {
+    if (login.isEmpty) {
+      print('No login provided');
+      return;
+    } else if (password.isEmpty) {
+      print('No password provided');
+      return;
+    }
+
+    final sqliteService = SQLiteService();
+    final user = await sqliteService.signIn(login, password);
+    if (user == null) {
+      print('User not found');
+      return;
+    }
+    final prefsService = SharedPreferencesService();
+    await prefsService.initPrefs();
+    await prefsService.setLoggedUser(user);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -35,16 +75,18 @@ class _LoginViewState extends State<LoginView> {
                   child: headerText('Sign in'),
                 ),
                 const SizedBox(height: 46),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Email or User Name',
                   prefixIcon: MyImages.user,
                   withShadow: true,
+                  onChange: onLoginChange,
                 ),
                 const SizedBox(height: 40),
-                const BasicTextFormField(
+                BasicTextFormField(
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
+                  onChange: onPasswordChange,
                 ),
                 const SizedBox(height: 40),
                 Align(
@@ -52,12 +94,10 @@ class _LoginViewState extends State<LoginView> {
                   child: _forgetPasswordText(),
                 ),
                 const SizedBox(height: 40),
-                basicButton(text: 'Sign in', onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeView()),
-                  );
-                },),
+                basicButton(
+                  text: 'Sign in',
+                  onPressed: onSignIn,
+                ),
                 const SizedBox(height: 170),
                 navigationText(
                   text: "Don't have account?",
@@ -65,7 +105,8 @@ class _LoginViewState extends State<LoginView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const RegisterView()),
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterView()),
                     );
                   },
                 ),
