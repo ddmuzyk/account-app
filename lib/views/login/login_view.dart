@@ -33,7 +33,7 @@ class _LoginViewState extends State<LoginView> {
     });
   }
 
-  void onSignIn() async {
+  Future<void> onSignIn() async {
     if (login.isEmpty) {
       print('No login provided');
       return;
@@ -106,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegisterView()),
+                          builder: (context) => const RegisterView(),),
                     );
                   },
                 ),

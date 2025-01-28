@@ -1,6 +1,7 @@
 import 'package:dsw_52745/services/shared_preferences_service.dart';
 import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
+import 'package:dsw_52745/utils/my_colors.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,7 +13,20 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
   String userName = '';
-  List<Map<String, dynamic>> tasks = [];
+  List<Map<String, dynamic>> tasks = [
+    {
+      'name': 'Task 1',
+      'description': 'Description 1',
+    },
+    {
+      'name': 'Task 2',
+      'description': 'Description 2',
+    },
+    {
+      'name': 'Task 3',
+      'description': 'Description 3',
+    },
+  ];
 
   @override
   void initState() {
@@ -35,7 +49,6 @@ class _HomeViewState extends State<HomeView> {
     final userTasks = await sqliteService.getUserTasks(loggedUser);
     setState(() {
       userName = loggedUser;
-      tasks = userTasks;
     });
   }
 
@@ -49,16 +62,20 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               const SizedBox(height: 62),
-              Text('Hello $userName!'),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Go back'),),
+              ),
               const SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Go back'),),
+              Text('Hello $userName!', style: TextStyle(fontSize: 24, color: MyColors.purple1),),
               const SizedBox(
                 height: 30,
               ),
+              Text('Your tasks:', style: TextStyle(fontSize: 18, color: MyColors.purple1),),
               SingleChildScrollView(
                 child: Column(
                   children: tasks.map((task) {
