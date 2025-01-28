@@ -1,6 +1,8 @@
+import 'package:dsw_52745/services/shared_preferences_service.dart';
 import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:dsw_52745/utils/my_images.dart';
+import 'package:dsw_52745/views/home/home_view.dart';
 import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
@@ -51,7 +53,7 @@ class _RegisterViewState extends State<RegisterView> {
     });
   }
 
-  void onSignUp() {
+  void onSignUp() async {
     if (fullName.isEmpty) {
       print('No fullName provided');
       return;
@@ -71,8 +73,21 @@ class _RegisterViewState extends State<RegisterView> {
       return;
     }
     final newUser = User(name: fullName, email: email, password: password);
-    final sqlLite = SQLiteService()
-      ..insertUser(newUser);
+    final sqlLite = SQLiteService();
+    try {
+      final registeredUser = await sqlLite.insertUser(newUser);
+      if (registeredUser != null) {
+        final prefsService = SharedPreferencesService();
+        await prefsService.initPrefs();
+        await prefsService.setLoggedUser(registeredUser);
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeView()),
+        );
+      }
+    } catch (e) {
+      print('Error inserting user: $e');
+    }
   }
 
   @override

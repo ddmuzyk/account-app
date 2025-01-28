@@ -76,10 +76,16 @@ class SQLiteService {
     );
   }
 
-  Future<void> insertUser(User user) async {
+  Future<String?> insertUser(User user) async {
     final db = await database;
-    await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
-    print('User added: $user');
+    try {
+      await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
+      print('User added: $user');
+      return user.name;
+    } catch (e) {
+      print('Error inserting user: $e');
+      return null;
+    }
   }
 
   Future<void> insertTask(Task task) async {

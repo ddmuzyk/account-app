@@ -24,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
     late final prefsService = SharedPreferencesService();
     await prefsService.initPrefs();
     final loggedUser = await prefsService.getLoggedUser();
+    print('loggedUser: $loggedUser');
     if (loggedUser.isEmpty) {
       print('No user logged in');
       Navigator.pop(context);
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               const SizedBox(height: 62),
-              const Text('Hello'),
+              Text('Hello $userName!'),
               const SizedBox(
                 height: 30,
               ),
