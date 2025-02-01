@@ -7,6 +7,7 @@ Widget taskTile({
   required String description,
   required DateTime dueDate,
   required VoidCallback onDelete,
+  required VoidCallback onEdit,
 }) {
   final formattedDate = DateFormat('dd MM yyyy').format(dueDate);
 
@@ -33,7 +34,7 @@ Widget taskTile({
         children: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {},
+            onPressed: onEdit,
           ),
           IconButton(
             icon: const Icon(Icons.delete),

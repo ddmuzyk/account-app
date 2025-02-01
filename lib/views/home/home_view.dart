@@ -3,6 +3,7 @@ import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:dsw_52745/views/widgets/task_tile.dart';
+import 'package:dsw_52745/views/widgets/edit_task_dialog.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -63,6 +64,36 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  void _showTaskDialog({int? index}) {
+    final isEditing = index != null;
+    final task = isEditing ? tasks[index] : null;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditTaskDialog(
+          initialName: task?['name'] as String,
+          initialDescription: task?['description'] as String,
+          initialDueDate: task?['dueDate'] as DateTime,
+          onSave: (name, description, dueDate) {
+            setState(() {
+              final newTask = {
+                'name': name,
+                'description': description,
+                'dueDate': dueDate,
+              };
+              if (isEditing) {
+                tasks[index] = newTask;
+              } else {
+                tasks.add(newTask);
+              }
+            });
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -100,6 +131,7 @@ class _HomeViewState extends State<HomeView> {
                       description: task['description'] as String,
                       dueDate: task['dueDate'] as DateTime,
                       onDelete: () => deleteTask(index),
+                      onEdit: () => _showTaskDialog(index: index),
                     );
                   }).toList(),
                 ),

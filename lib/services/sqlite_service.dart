@@ -54,7 +54,6 @@ class SQLiteService {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    // await _deleteExistingDatabase();
     _database = await _initDatabase();
     return _database!;
   }
@@ -62,7 +61,6 @@ class SQLiteService {
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'app_database.db');
-    print('Initializing in initDatabase');
 
     return openDatabase(
       path,
@@ -74,14 +72,12 @@ class SQLiteService {
         await db.execute(
           'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userId) REFERENCES users(id))',
         );
-        print('Tables created');
       },
     );
   }
 
   Future<String?> insertUser(User user) async {
     final db = await database;
-    print('running insertUser');
     try {
       await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
       print('User added: $user');
