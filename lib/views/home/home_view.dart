@@ -1,7 +1,7 @@
 import 'package:dsw_52745/services/shared_preferences_service.dart';
 import 'package:dsw_52745/services/sqlite_service.dart';
-import 'package:flutter/material.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
+import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,15 +17,19 @@ class _HomeViewState extends State<HomeView> {
     {
       'name': 'Task 1',
       'description': 'Description 1',
+      'dueDate': DateTime.now(),
     },
     {
       'name': 'Task 2',
       'description': 'Description 2',
+      'dueDate': DateTime.now(),
     },
     {
       'name': 'Task 3',
       'description': 'Description 3',
+      'dueDate': DateTime.now(),
     },
+
   ];
 
   @override

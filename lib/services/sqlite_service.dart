@@ -29,13 +29,13 @@ class Task {
   final String userId;
   final String name;
   final String description;
-  final DateTime createdAt;
+  final DateTime dueDate;
 
   Task({
     required this.userId,
     required this.name,
     required this.description,
-    required this.createdAt,
+    required this.dueDate,
   });
 
   Map<String, Object?> toMap() {
@@ -44,7 +44,7 @@ class Task {
       'name': name,
       'userId': userId,
       'description': description,
-      'createdAt': createdAt,
+      'dueDate': dueDate,
     };
   }
 }
@@ -54,6 +54,7 @@ class SQLiteService {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
+    // await _deleteExistingDatabase();
     _database = await _initDatabase();
     return _database!;
   }
@@ -61,23 +62,26 @@ class SQLiteService {
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'app_database.db');
+    print('Initializing in initDatabase');
 
     return openDatabase(
       path,
       version: 1,
-      onCreate: (db, version) {
-        db..execute(
+      onCreate: (db, version) async {
+        await db.execute(
           'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT)',
-        )
-        ..execute(
-          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, createdAt TEXT, FOREIGN KEY(userId) REFERENCES users(id))',
         );
+        await db.execute(
+          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userId) REFERENCES users(id))',
+        );
+        print('Tables created');
       },
     );
   }
 
   Future<String?> insertUser(User user) async {
     final db = await database;
+    print('running insertUser');
     try {
       await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
       print('User added: $user');
@@ -104,7 +108,7 @@ class SQLiteService {
     final db = await database;
     final List<Map<String, dynamic>> tasks = await db.query(
       constants.tasksTable,
-      columns: ['name', 'description', 'createdAt'],
+      columns: ['name', 'description', 'dueDate'],
       where: 'name = ?',
       whereArgs: [username],
     );
@@ -131,5 +135,11 @@ class SQLiteService {
       print('Error during login: $e');
       return null;
     }
+  }
+
+  Future<void> _deleteExistingDatabase() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'app_database.db');
+    await deleteDatabase(path);
   }
 }

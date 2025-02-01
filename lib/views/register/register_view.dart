@@ -8,6 +8,7 @@ import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -53,7 +54,16 @@ class _RegisterViewState extends State<RegisterView> {
     });
   }
 
+  Future<void> sigma() async {
+    final path = await getDatabasesPath();
+    print('Db path: $path');
+    await deleteDatabase(path);
+    print('Db deleted');
+  }
+
   void onSignUp() async {
+    // await sigma();
+    // return;
     if (fullName.isEmpty) {
       print('No fullName provided');
       return;
