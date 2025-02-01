@@ -2,6 +2,7 @@ import 'package:dsw_52745/services/shared_preferences_service.dart';
 import 'package:dsw_52745/services/sqlite_service.dart';
 import 'package:dsw_52745/utils/my_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:dsw_52745/views/widgets/task_tile.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -56,6 +57,12 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  void deleteTask(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,14 +87,19 @@ class _HomeViewState extends State<HomeView> {
                 height: 30,
               ),
               Text('Your tasks:', style: TextStyle(fontSize: 18, color: MyColors.purple1),),
+              const SizedBox(
+                height: 20,
+              ),
               SingleChildScrollView(
                 child: Column(
-                  children: tasks.map((task) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(task['name'] as String),
-                        subtitle: Text(task['description'] as String),
-                      ),
+                  children: tasks.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final task = entry.value;
+                    return taskTile(
+                      title: task['name'] as String,
+                      description: task['description'] as String,
+                      dueDate: task['dueDate'] as DateTime,
+                      onDelete: () => deleteTask(index),
                     );
                   }).toList(),
                 ),

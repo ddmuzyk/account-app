@@ -97,6 +97,15 @@ class SQLiteService {
     await db.insert(constants.tasksTable, task.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
   }
 
+  Future<void> deleteTask(String taskName, String username) async {
+    final db = await database;
+    await db.delete(
+      constants.tasksTable,
+      where: 'name = ? AND username = ?',
+      whereArgs: [taskName, username],
+    );
+  }
+
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
     final users = await db.query(constants.usersTable);
