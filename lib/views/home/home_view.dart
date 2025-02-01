@@ -68,13 +68,18 @@ class _HomeViewState extends State<HomeView> {
     final isEditing = index != null;
     final task = isEditing ? tasks[index] : null;
 
+    final initialName = task != null ? task['name'] as String : '';
+    final initialDescription = task != null ? task['description'] as String : '';
+    final initialDueDate = task != null ? task['dueDate'] as DateTime : DateTime.now();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return EditTaskDialog(
-          initialName: task?['name'] as String,
-          initialDescription: task?['description'] as String,
-          initialDueDate: task?['dueDate'] as DateTime,
+          initialName: initialName,
+          initialDescription: initialDescription,
+          initialDueDate: initialDueDate,
+          isEditing: isEditing,
           onSave: (name, description, dueDate) {
             setState(() {
               final newTask = {
@@ -119,7 +124,15 @@ class _HomeViewState extends State<HomeView> {
               ),
               Text('Your tasks:', style: TextStyle(fontSize: 18, color: MyColors.purple1),),
               const SizedBox(
-                height: 20,
+                height: 30,
+              ),
+              FloatingActionButton(
+                onPressed: _showTaskDialog,
+                backgroundColor: MyColors.purple3,
+                child: const Icon(Icons.add),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               SingleChildScrollView(
                 child: Column(

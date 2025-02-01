@@ -6,12 +6,14 @@ class EditTaskDialog extends StatefulWidget {
   final String? initialDescription;
   final DateTime? initialDueDate;
   final void Function(String name, String description, DateTime dueDate) onSave;
+  final bool isEditing;
 
   const EditTaskDialog({
     required this.onSave, super.key,
     this.initialName,
     this.initialDescription,
     this.initialDueDate,
+    this.isEditing = false,
   });
 
   @override
@@ -42,7 +44,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.initialName != null ? 'Edit Task' : 'Create Task'),
+      title: Text(widget.isEditing ? 'Edit Task' : 'Create Task'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
