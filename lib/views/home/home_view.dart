@@ -15,24 +15,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
   String userName = '';
-  List<Map<String, dynamic>> tasks = [
-    {
-      'name': 'Task 1',
-      'description': 'Description 1',
-      'dueDate': DateTime.now(),
-    },
-    {
-      'name': 'Task 2',
-      'description': 'Description 2',
-      'dueDate': DateTime.now(),
-    },
-    {
-      'name': 'Task 3',
-      'description': 'Description 3',
-      'dueDate': DateTime.now(),
-    },
-
-  ];
+  List<Map<String, dynamic>> tasks = [];
 
   @override
   void initState() {
@@ -55,6 +38,7 @@ class _HomeViewState extends State<HomeView> {
     final userTasks = await sqliteService.getUserTasks(loggedUser);
     setState(() {
       userName = loggedUser;
+      tasks = userTasks;
     });
   }
 
@@ -134,19 +118,21 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(
                 height: 30,
               ),
-              SingleChildScrollView(
-                child: Column(
-                  children: tasks.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final task = entry.value;
-                    return taskTile(
-                      title: task['name'] as String,
-                      description: task['description'] as String,
-                      dueDate: task['dueDate'] as DateTime,
-                      onDelete: () => deleteTask(index),
-                      onEdit: () => _showTaskDialog(index: index),
-                    );
-                  }).toList(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: tasks.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final task = entry.value;
+                      return taskTile(
+                        title: task['name'] as String,
+                        description: task['description'] as String,
+                        dueDate: task['dueDate'] as DateTime,
+                        onDelete: () => deleteTask(index),
+                        onEdit: () => _showTaskDialog(index: index),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:dsw_52745/services/sqlite_service.dart';
+import 'package:dsw_52745/services/shared_preferences_service.dart';
 
 class EditTaskDialog extends StatefulWidget {
   final String? initialName;
@@ -9,7 +11,8 @@ class EditTaskDialog extends StatefulWidget {
   final bool isEditing;
 
   const EditTaskDialog({
-    required this.onSave, super.key,
+    required this.onSave,
+    super.key,
     this.initialName,
     this.initialDescription,
     this.initialDueDate,
@@ -29,8 +32,12 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.initialName ?? '');
-    _descriptionController = TextEditingController(text: widget.initialDescription ?? '');
-    _dueDateController = TextEditingController(text: widget.initialDueDate != null ? DateFormat('dd MM yyyy').format(widget.initialDueDate!) : '');
+    _descriptionController =
+        TextEditingController(text: widget.initialDescription ?? '');
+    _dueDateController = TextEditingController(
+        text: widget.initialDueDate != null
+            ? DateFormat('dd MM yyyy').format(widget.initialDueDate!)
+            : '');
   }
 
   @override
@@ -67,7 +74,8 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 lastDate: DateTime(2101),
               );
               if (pickedDate != null) {
-                _dueDateController.text = DateFormat('dd MM yyyy').format(pickedDate);
+                _dueDateController.text =
+                    DateFormat('dd MM yyyy').format(pickedDate);
               }
             },
           ),
@@ -81,7 +89,35 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
+            final isValid = _nameController.text.isNotEmpty &&
+                _descriptionController.text.isNotEmpty &&
+                _dueDateController.text.isNotEmpty;
+            if (!isValid) {
+              print('Invalid task data');
+              return;
+            }
+            final sqliteService = SQLiteService();
+            final prefsService = SharedPreferencesService();
+            await prefsService.initPrefs();
+            final loggedUser = await prefsService.getLoggedUser();
+            if (loggedUser.isEmpty) {
+              print('No user logged in');
+              return;
+            }
+            final task = Task(
+              name: _nameController.text,
+              description: _descriptionController.text,
+              dueDate: DateFormat('dd MM yyyy').parse(_dueDateController.text),
+              userName: loggedUser,
+            );
+            if (widget.isEditing) {
+              await sqliteService.updateTask(task);
+              print('Task updated: ${task.name}');
+            } else {
+              await sqliteService.insertTask(task);
+              print('Task created: ${task.name}');
+            }
             widget.onSave(
               _nameController.text,
               _descriptionController.text,

@@ -26,13 +26,13 @@ class User {
 
 class Task {
   final Null id = null;
-  final String userId;
+  final String userName;
   final String name;
   final String description;
   final DateTime dueDate;
 
   Task({
-    required this.userId,
+    required this.userName,
     required this.name,
     required this.description,
     required this.dueDate,
@@ -42,9 +42,9 @@ class Task {
     return {
       'id': id,
       'name': name,
-      'userId': userId,
+      'userName': userName,
       'description': description,
-      'dueDate': dueDate,
+      'dueDate': dueDate.toIso8601String(),
     };
   }
 }
@@ -70,7 +70,7 @@ class SQLiteService {
           'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT)',
         );
         await db.execute(
-          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userId INTEGER, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userId) REFERENCES users(id))',
+          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userName TEXT UNIQUE NOT NULL, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userName) REFERENCES users(name))',
         );
       },
     );
@@ -93,12 +93,25 @@ class SQLiteService {
     await db.insert(constants.tasksTable, task.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
   }
 
-  Future<void> deleteTask(String taskName, String username) async {
+  Future<void> updateTask(Task task) async {
+    final db = await database;
+    await db.update(
+      constants.tasksTable,
+      {
+        'description': task.description,
+        'dueDate': task.dueDate,
+      },
+      where: 'name = ? AND userName = ?',
+      whereArgs: [task.name, task.userName],
+    );
+  }
+
+  Future<void> deleteTask(String taskName, String userName) async {
     final db = await database;
     await db.delete(
       constants.tasksTable,
-      where: 'name = ? AND username = ?',
-      whereArgs: [taskName, username],
+      where: 'name = ? AND userName = ?',
+      whereArgs: [taskName, userName],
     );
   }
 
@@ -114,10 +127,16 @@ class SQLiteService {
     final List<Map<String, dynamic>> tasks = await db.query(
       constants.tasksTable,
       columns: ['name', 'description', 'dueDate'],
-      where: 'name = ?',
+      where: 'userName = ?',
       whereArgs: [username],
     );
-    return tasks;
+    return tasks.map((task) {
+      return {
+        'name': task['name'],
+        'description': task['description'],
+        'dueDate': DateTime.parse(task['dueDate'] as String),
+      };
+    }).toList();
   }
 
   Future<String?> signIn(String login, String password) async {
