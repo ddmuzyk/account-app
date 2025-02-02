@@ -80,7 +80,6 @@ class SQLiteService {
     final db = await database;
     try {
       await db.insert(constants.usersTable, user.toMap(), conflictAlgorithm: ConflictAlgorithm.rollback);
-      print('User added: $user');
       return user.name;
     } catch (e) {
       print('Error inserting user: $e');
@@ -108,8 +107,6 @@ class SQLiteService {
 
   Future<void> deleteTask(String taskName, String userName) async {
     final db = await database;
-    print('Deleting task: $taskName');
-    print('Deleting task from user: $userName');
     await db.delete(
       constants.tasksTable,
       where: 'name = ? AND userName = ?',
@@ -120,7 +117,6 @@ class SQLiteService {
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
     final users = await db.query(constants.usersTable);
-    print('Users: $users');
     return users;
   }
 

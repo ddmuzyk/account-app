@@ -6,9 +6,9 @@ import 'package:dsw_52745/views/home/home_view.dart';
 import 'package:dsw_52745/views/register/register_view.dart';
 import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
+import 'package:dsw_52745/views/widgets/form_warning.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
-import 'package:dsw_52745/views/widgets/form_warning.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {

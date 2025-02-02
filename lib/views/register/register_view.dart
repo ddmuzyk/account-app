@@ -166,7 +166,7 @@ class _RegisterViewState extends State<RegisterView> {
                   onChange: onConfirmedPasswordChange,
                 ),
                 formWarning(text: 'Passwords do not match', isVisible: isConfirmedPasswordWarningVisible),
-                const SizedBox(height: 80),
+                const SizedBox(height: 40),
                 basicButton(text: 'Sign up', onPressed: onSignUp),
                 const SizedBox(height: 60),
                 navigationText(
