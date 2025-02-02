@@ -7,23 +7,27 @@ class BasicTextFormField extends StatelessWidget {
   final bool withShadow;
   final String? suffixIcon;
   final ValueChanged<String>? onChange;
+  final bool? hiddenText;
 
-  const BasicTextFormField(
-      {required this.hintText,
-      required this.prefixIcon,
-      super.key,
-      this.withShadow = false,
-      this.suffixIcon,
-      this.onChange,});
+  const BasicTextFormField({
+    required this.hintText,
+    required this.prefixIcon,
+    super.key,
+    this.withShadow = false,
+    this.suffixIcon,
+    this.onChange,
+    this.hiddenText = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     final List<Shadow> shadow = withShadow
         ? [
             Shadow(
-                color: MyColors.black.withAlpha(25),
-                blurRadius: 4,
-                offset: const Offset(0, 4),),
+              color: MyColors.black.withAlpha(25),
+              blurRadius: 4,
+              offset: const Offset(0, 4),
+            ),
           ]
         : [];
 
@@ -32,6 +36,7 @@ class BasicTextFormField extends StatelessWidget {
       child: TextFormField(
         initialValue: '',
         onChanged: onChange,
+        obscureText: hiddenText!,
         decoration: InputDecoration(
           prefixIcon: Image.asset(prefixIcon),
           suffixIcon: suffixIcon != null ? Image.asset(suffixIcon!) : null,
