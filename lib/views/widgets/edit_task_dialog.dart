@@ -111,6 +111,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
               dueDate: DateFormat('dd MM yyyy').parse(_dueDateController.text),
               userName: loggedUser,
             );
+            print('date: ${task.dueDate}');
             if (widget.isEditing) {
               await sqliteService.updateTask(task);
               print('Task updated: ${task.name}');

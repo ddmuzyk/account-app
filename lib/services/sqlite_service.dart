@@ -70,7 +70,7 @@ class SQLiteService {
           'CREATE TABLE ${constants.usersTable} (id INTEGER PRIMARY KEY , name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT)',
         );
         await db.execute(
-          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userName TEXT UNIQUE NOT NULL, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userName) REFERENCES users(name))',
+          'CREATE TABLE ${constants.tasksTable} (id INTEGER PRIMARY KEY, userName TEXT NOT NULL, name TEXT UNIQUE, description TEXT, dueDate DATE, FOREIGN KEY(userName) REFERENCES users(name))',
         );
       },
     );
@@ -99,7 +99,7 @@ class SQLiteService {
       constants.tasksTable,
       {
         'description': task.description,
-        'dueDate': task.dueDate,
+        'dueDate': task.dueDate.toIso8601String(),
       },
       where: 'name = ? AND userName = ?',
       whereArgs: [task.name, task.userName],
@@ -108,6 +108,8 @@ class SQLiteService {
 
   Future<void> deleteTask(String taskName, String userName) async {
     final db = await database;
+    print('Deleting task: $taskName');
+    print('Deleting task from user: $userName');
     await db.delete(
       constants.tasksTable,
       where: 'name = ? AND userName = ?',
