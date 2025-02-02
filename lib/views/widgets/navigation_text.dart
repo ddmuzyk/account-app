@@ -9,7 +9,7 @@ Widget navigationText({
 }) {
   return RichText(
     text: TextSpan(
-      text: "Don't have account?",
+      text: text,
       style: TextStyle(color: MyColors.purple1, fontSize: 15),
       children: [
         TextSpan(

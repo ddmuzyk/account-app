@@ -8,6 +8,7 @@ import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
+import 'package:dsw_52745/views/widgets/form_warning.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
@@ -20,17 +21,26 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   String login = '';
   String password = '';
+  bool isInvalidLogin = false;
+
+  void onInvalidLogin({required bool b}) {
+    setState(() {
+      isInvalidLogin = b;
+    });
+  }
 
   void onLoginChange(String newLogin) {
     setState(() {
       login = newLogin;
     });
+    onInvalidLogin(b: false);
   }
 
   void onPasswordChange(String newPassword) {
     setState(() {
       password = newPassword;
     });
+    onInvalidLogin(b: false);
   }
 
   Future<void> onSignIn() async {
@@ -45,7 +55,7 @@ class _LoginViewState extends State<LoginView> {
     final sqliteService = SQLiteService();
     final user = await sqliteService.signIn(login, password);
     if (user == null) {
-      print('User not found');
+      onInvalidLogin(b: true);
       return;
     }
     final prefsService = SharedPreferencesService();
@@ -88,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                   suffixIcon: MyImages.eye,
                   onChange: onPasswordChange,
                 ),
-                const SizedBox(height: 40),
+                formWarning(text: 'Invalid login or password', isVisible: isInvalidLogin),
                 Align(
                   alignment: Alignment.centerRight,
                   child: _forgetPasswordText(),

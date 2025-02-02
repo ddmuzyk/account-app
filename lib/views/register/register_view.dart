@@ -5,10 +5,10 @@ import 'package:dsw_52745/utils/my_images.dart';
 import 'package:dsw_52745/views/home/home_view.dart';
 import 'package:dsw_52745/views/widgets/basic_button.dart';
 import 'package:dsw_52745/views/widgets/basic_text_form_field.dart';
+import 'package:dsw_52745/views/widgets/form_warning.dart';
 import 'package:dsw_52745/views/widgets/header_text.dart';
 import 'package:dsw_52745/views/widgets/navigation_text.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -23,63 +23,84 @@ class _RegisterViewState extends State<RegisterView> {
   String password = '';
   String confirmedPassword = '';
 
-  bool isConfirmedPasswordValid(){
+  bool isNameWarningVisible = false;
+  bool isEmailWarningVisible = false;
+  bool isPasswordWarningVisible = false;
+  bool isConfirmedPasswordWarningVisible = false;
+
+  bool isConfirmedPasswordValid() {
     final isValid = password == confirmedPassword;
     return isValid;
   }
+  void onNameWarning({required bool b}) {
+    setState(() {
+      isNameWarningVisible = b;
+    });
+  }
 
-  void onFullNameChange(String newName){
+  void onEmailWarning({required bool b}) {
+    setState(() {
+      isEmailWarningVisible = b;
+    });
+  }
+
+  void onPasswordWarning({required bool b}) {
+    setState(() {
+      isPasswordWarningVisible = b;
+    });
+  }
+
+  void onConfirmedPasswordWarning({required bool b}) {
+    setState(() {
+      isConfirmedPasswordWarningVisible = b;
+    });
+  }
+
+  void onFullNameChange(String newName) {
     setState(() {
       fullName = newName;
-      print('fullName: $fullName');
     });
+    onNameWarning(b: false);
   }
 
   Future<void> onEmailChange(String newEmail) async {
     setState(() {
       email = newEmail;
     });
-    await SQLiteService().getUsers();
+    onEmailWarning(b: false);
   }
 
-  void onPasswordChange(String newPassword){
+  void onPasswordChange(String newPassword) {
     setState(() {
       password = newPassword;
     });
+    onPasswordWarning(b: false);
   }
 
   void onConfirmedPasswordChange(String newConfirmedPassword) {
     setState(() {
       confirmedPassword = newConfirmedPassword;
     });
+    onConfirmedPasswordWarning(b: false);
   }
 
-  Future<void> sigma() async {
-    final path = await getDatabasesPath();
-    print('Db path: $path');
-    await deleteDatabase(path);
-    print('Db deleted');
-  }
-
-  void onSignUp() async {
-    // await sigma();
-    // return;
+  Future<void> onSignUp() async {
     if (fullName.isEmpty) {
-      print('No fullName provided');
+      onNameWarning(b: true);
       return;
     } else if (email.isEmpty) {
-      print('No email provided');
+      onEmailWarning(b: true);
       return;
     } else if (password.isEmpty) {
-      print('No password provided');
+      onPasswordWarning(b: true);
       return;
     } else if (confirmedPassword.isEmpty) {
-      print('No confirmed password provided');
+      onConfirmedPasswordWarning(b: true);
       return;
     }
     final isPasswordMatch = isConfirmedPasswordValid();
     if (!isPasswordMatch) {
-      print('Password need to match');
+      onConfirmedPasswordWarning(b: true);
       return;
     }
     final newUser = User(name: fullName, email: email, password: password);
@@ -124,26 +145,27 @@ class _RegisterViewState extends State<RegisterView> {
                   prefixIcon: MyImages.user,
                   onChange: onFullNameChange,
                 ),
-                const SizedBox(height: 40),
+                formWarning(text: 'Provide a valid name', isVisible: isNameWarningVisible),
                 BasicTextFormField(
                   hintText: 'Email',
                   prefixIcon: MyImages.email,
                   onChange: onEmailChange,
                 ),
-                const SizedBox(height: 40),
+                formWarning(text: 'Provide a valid email', isVisible: isEmailWarningVisible),
                 BasicTextFormField(
                   hintText: 'Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
                   onChange: onPasswordChange,
                 ),
-                const SizedBox(height: 40),
+                formWarning(text: 'Provide a valid password', isVisible: isPasswordWarningVisible),
                 BasicTextFormField(
                   hintText: 'Confirm Password',
                   prefixIcon: MyImages.password,
                   suffixIcon: MyImages.eye,
                   onChange: onConfirmedPasswordChange,
                 ),
+                formWarning(text: 'Passwords do not match', isVisible: isConfirmedPasswordWarningVisible),
                 const SizedBox(height: 80),
                 basicButton(text: 'Sign up', onPressed: onSignUp),
                 const SizedBox(height: 60),
@@ -171,11 +193,14 @@ Widget _backButton(BuildContext context) {
     child: Row(
       children: [
         Image.asset(MyImages.backArrow),
-        Text('Back',
-            style: TextStyle(
-                fontSize: 12,
-                color: MyColors.purple1,
-                fontWeight: FontWeight.w400,),),
+        Text(
+          'Back',
+          style: TextStyle(
+            fontSize: 12,
+            color: MyColors.purple1,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ],
     ),
   );
